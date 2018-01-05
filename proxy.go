@@ -25,7 +25,9 @@ func getURIByName(name string) string {
 	return ""
 }
 
-// TODO: 优化转码逻辑：一个摄像头就开一个转码就行了。
+// TODO: 优化转码逻辑：
+// 1. 一个摄像头，最多开一个转码。
+// 2. 每个摄像头下，增加一个客户端队列，管理连接过来的客户，转码后的流发送给队列中的所有客户。
 func runFFMpeg(w http.ResponseWriter, r *http.Request, name string) {
 	uri := getURIByName(name)
 	if uri == "" {
