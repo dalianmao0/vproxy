@@ -47,6 +47,7 @@ func loadFile(fname string) (data string, err error) {
 
 // Load the config from file fname
 func Load(fname string) (m map[string]string, e error) {
+	// TODO: 当前只支持从配置文件加载摄像头 URL，未来需兼容从 DB 加载摄像头 URL
 	fdata, err := loadFile(fname)
 	if err != nil {
 		fmt.Println("Read config.json failed.", err)
