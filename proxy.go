@@ -18,13 +18,20 @@ var (
 )
 
 func getURIByName(name string) string {
-	uri := vlist[name]
-	return uri
+	if v, ok := vlist[name]; ok {
+		return v
+	}
+	fmt.Println("Key Not Found: ", name)
+	return ""
 }
 
 // TODO: 优化转码逻辑：一个摄像头就开一个转码就行了。
 func runFFmpeg(w http.ResponseWriter, r *http.Request, name string) {
 	uri := getURIByName(name)
+	if uri == "" {
+		fmt.Println("NO such IPC found: ", name)
+		return
+	}
 
 	fmt.Println("runFFmpeg: ", name, uri)
 
