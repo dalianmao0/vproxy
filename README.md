@@ -14,7 +14,7 @@ ffmpeg -re -rtsp_transport tcp -i <RTSP-URL> -vcodec copy -f mp4 -movflags frag_
 
 ## 安装
 
-### 服务器 ( Linux)
+### 服务器 (Linux)
 
 1. 安装 FFMpeg 环境
 
