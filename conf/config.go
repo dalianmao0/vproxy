@@ -8,12 +8,19 @@ import (
 	"os"
 )
 
-func json2map(req string) (s map[string]interface{}, err error) {
+func json2map(req string) (s map[string]string, err error) {
 	var result map[string]interface{}
 	if err := json.Unmarshal([]byte(req), &result); err != nil {
 		return nil, err
 	}
-	return result, nil
+
+	// convert map[string]interface{} to map[string]string
+	mm := make(map[string]string)
+	for k := range result {
+		mm[k] = result[k].(string)
+	}
+
+	return mm, nil
 }
 
 func loadFile(fname string) (data string, err error) {
@@ -54,16 +61,5 @@ func Load(fname string) (m map[string]string, e error) {
 		return nil, err
 	}
 
-	configs, err := json2map(fdata)
-	if err == nil {
-		// convert map[string]interface{} to map[string]string
-		mm := make(map[string]string)
-		for k := range configs {
-			mm[k] = configs[k].(string)
-		}
-
-		return mm, nil
-	}
-
-	return nil, err
+	return json2map(fdata)
 }
