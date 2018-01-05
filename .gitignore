@@ -24,6 +24,7 @@ _testmain.go
 *.test
 *.prof
 
-.vscode/temp.sql
 lproxy
+wproxy.exe
 *.zip
+.vscode/*.sql
