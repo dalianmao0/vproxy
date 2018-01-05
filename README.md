@@ -67,7 +67,7 @@ CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -ldflags "-s -w" -o lproxy proxy.
 windows 版本
 
 ```shell
-CGO_ENABLED=0 GOOS=windows GOARCH=amd64 go build -ldflags "-s -w" -o wproxy proxy.go
+CGO_ENABLED=0 GOOS=windows GOARCH=amd64 go build -ldflags "-s -w" -o wproxy.exe proxy.go
 ```
 
 
