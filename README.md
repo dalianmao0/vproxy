@@ -14,7 +14,7 @@ ffmpeg -re -rtsp_transport tcp -i <RTSP-URL> -vcodec copy -f mp4 -movflags frag_
 
 ## 安装
 
-### 服务器 ( Linux)
+### 服务器 (Linux)
 
 1. 安装 FFMpeg 环境
 
@@ -99,4 +99,3 @@ go build -o lproxy proxy.go
 > - GOOS：目标平台的操作系统（darwin、freebsd、linux、windows） 
 > - GOARCH：目标平台的体系架构（386、amd64、arm） 
 > - 交叉编译时，不支持 CGO， 所以要禁用它
-
