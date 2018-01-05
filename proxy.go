@@ -21,19 +21,19 @@ func getURIByName(name string) string {
 	if v, ok := vlist[name]; ok {
 		return v
 	}
-	fmt.Println("Key Not Found: ", name)
+	fmt.Printf("Key %s NOT found. \n", name)
 	return ""
 }
 
 // TODO: 优化转码逻辑：一个摄像头就开一个转码就行了。
-func runFFmpeg(w http.ResponseWriter, r *http.Request, name string) {
+func runFFMpeg(w http.ResponseWriter, r *http.Request, name string) {
 	uri := getURIByName(name)
 	if uri == "" {
-		fmt.Println("NO such IPC found: ", name)
+		fmt.Println("NO such IPC found: key=", name)
 		return
 	}
 
-	fmt.Println("runFFmpeg: ", name, uri)
+	fmt.Println("runFFMpeg: ", name, uri)
 
 	w.Header().Set("Connection", "keep-alive")
 	w.Header().Set("Content-Type", "video/mp4")
@@ -80,7 +80,7 @@ func runFFmpeg(w http.ResponseWriter, r *http.Request, name string) {
 	cmd.Wait()
 
 	// log.Println("leave ...")
-	fmt.Println("FFMpeg transcoding finished, exit...")
+	fmt.Println("Transcoding finished, FFMpeg exits.")
 }
 
 func printCommand(cmd *exec.Cmd) {
@@ -100,16 +100,24 @@ func sendStream(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	runFFmpeg(w, r, params.Get("name"))
+	runFFMpeg(w, r, params.Get("name"))
 }
 
-func main() {
-	// load the config
+func loadConfig() {
+	fmt.Print("Loading config ... ")
+
 	alist, err := conf.Load("./config.json")
 	if err != nil {
 		fmt.Println("load config failed. ", err)
 	}
 	vlist = alist
+
+	fmt.Println("done.")
+}
+
+func main() {
+	// load the config
+	loadConfig()
 
 	// deal all static resource request
 	http.Handle("/app/", http.StripPrefix("/app/", http.FileServer(http.Dir("./app"))))
@@ -118,10 +126,9 @@ func main() {
 	http.HandleFunc("/ipc/", sendStream)
 
 	// start the web server
+	fmt.Println("Proxy is going to listen on 9000...")
 	err2 := http.ListenAndServe(":9000", nil)
 	if err2 != nil {
 		log.Fatal("ListenAndServe: ", err2)
-	} else {
-		fmt.Println("Proxy started on port 9000...")
 	}
 }
