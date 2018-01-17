@@ -28,3 +28,5 @@ lproxy
 wproxy.exe
 *.zip
 .vscode/*.sql
+conf/config-gh.json
+.DS_Store
