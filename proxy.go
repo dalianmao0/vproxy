@@ -41,30 +41,51 @@ func runFFMpeg(w http.ResponseWriter, r *http.Request, name string) {
 	w.Header().Set("Content-Type", "video/mp4")
 	w.Header().Set("Accept-Ranges", "bytes")
 
-	cmd := exec.Command("ffmpeg",
-		"-y",  // 默认自动覆盖输出文件，而不再询问确认
-		"-re", // 以本地帧频读数据，主要用于模拟捕获设备
-		"-rtsp_transport",
-		"tcp",
-		"-i",
-		uri,
-		// "-g 52", // 强制每第 52 帧作为关键帧
-		"-vcodec",
-		"copy",
-		"-f",
-		"mp4",
-		"-movflags",
-		"frag_keyframe", // <- for Chrome,
-		// "frag_keyframe+empty_moov", // <- for Firefox
-		"-reset_timestamps",
-		"1",
-		"-vsync",
-		"1",
-		"-flags",
-		"global_header",
-		"-bsf:v", // video bitstream filter
-		"dump_extra",
-		"-")
+	temp := getURIByName("cmd")
+	s := strings.Replace(temp, "{{uri}}", uri, -1)
+	params := strings.Split(s, " ")
+	cmd := exec.Command("ffmpeg", params...)
+
+	// cmd := exec.Command("ffmpeg",
+	// 	"-y",  // 默认自动覆盖输出文件，而不再询问确认
+	// 	"-re", // 以本地帧频读数据，主要用于模拟捕获设备
+	// 	"-rtsp_transport",
+	// 	"tcp",
+	// 	// "-rtsp_flags",
+	// 	// "listen",
+	// 	"-max_delay",
+	// 	"500000",
+	// 	"-i",
+	// 	uri,
+	// 	"-vcodec",
+	// 	"libx264",
+	// 	// "-vcodec", // rtsp 默认是 x264 编码
+	// 	// "copy",
+	// 	"-preset", // 开启x264的 -preset slow/fast/faster/veryfast/superfast/ultrafast 参数
+	// 	"ultrafast",
+	// 	"-tune",
+	// 	"zerolatency",
+	// 	"-g", // 强制每第 6 帧作为关键帧
+	// 	"6",
+	// 	"-threads",
+	// 	"4",
+	// 	"-f",
+	// 	"mp4",
+	// 	// "-muxdelay",
+	// 	// "0.1",
+	// 	"-movflags",
+	// 	"frag_keyframe", // <- for Chrome,
+	// 	// "frag_keyframe+empty_moov", // <- for Firefox
+	// 	// "-reset_timestamps",
+	// 	// "1",
+	// 	// "-vsync", // 增减Frame使影音同步。
+	// 	// "1",
+	// 	"-flags",
+	// 	"global_header",
+	// 	"-bsf:v", // video bitstream filter
+	// 	"dump_extra",
+	// 	"-")
+
 	printCommand(cmd)
 	randomBytes := &bytes.Buffer{}
 	cmd.Stdout = w
