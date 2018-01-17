@@ -100,9 +100,12 @@ func runFFMpeg(w http.ResponseWriter, r *http.Request, name string) {
 	}
 
 	// system blocked here until the transcoding finished
-	cmd.Wait()
+	err2 := cmd.Wait()
+	if err2 != nil {
+		fmt.Println("Transcoding terminated with error: ", err2)
+		return
+	}
 
-	// log.Println("leave ...")
 	fmt.Println("Transcoding finished, FFMpeg exits.")
 }
 
