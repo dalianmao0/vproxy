@@ -24,9 +24,34 @@
 <body>
   <span>RTSP 2 Fragmented MP4 demo</span>
 
-  <video id="video_01" controls autoplay preload="auto" width="640">
-    <source src="/ipc/?name=demo">
+  <!-- <video id="demo" controls autoplay preload="auto" width="640"> -->
+  <video id="demo" controls width="640">
+    <!-- <source src="http://60.220.238.150:9000/ipc/?name=gaohe_inner"> -->
+    <!-- <source src="/ipc/?name=demo"> -->
   </video>
 </body>
+
+<script language="javascript">
+  // var vurl = "http://60.220.238.150:9000/ipc/?name=gaohe_inner"
+  var vurl = "/ipc/?name=demo"
+
+  var video = document.getElementById("demo");
+  video.addEventListener('ended', () => {
+    console.log("===> video stream ended.")
+    play()
+  })
+
+  function play() {
+    console.log("start to play...")
+    video.src = vurl
+    video.load()
+    video.play()
+  }
+
+  document.addEventListener('DOMContentLoaded', () => {
+    console.log("the first round")
+    play()
+  })  
+</script>
 
 </html>

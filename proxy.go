@@ -96,17 +96,17 @@ func runFFMpeg(w http.ResponseWriter, r *http.Request, name string) {
 
 	if _, err := w.Write(randomBytes.Bytes()); err != nil {
 		// log.Println("unable to write output.")
-		fmt.Println("unable to write output.")
+		fmt.Println("Unable to write output.")
 	}
 
 	// system blocked here until the transcoding finished
 	err2 := cmd.Wait()
 	if err2 != nil {
-		fmt.Println("Transcoding terminated with error: ", err2)
+		fmt.Println("Transcoding interrupted with error: ", err2)
 		return
 	}
 
-	fmt.Println("Transcoding finished, FFMpeg exits.")
+	fmt.Println("Transcoding finished.")
 }
 
 func printCommand(cmd *exec.Cmd) {
@@ -151,10 +151,13 @@ func main() {
 	// deal all ip-camera request
 	http.HandleFunc("/ipc/", sendStream)
 
+	ip := getURIByName("ip")
+	port := getURIByName("port")
 	// start the web server
-	fmt.Println("Proxy is going to listen on 9000...")
-	err2 := http.ListenAndServe(":9000", nil)
+	fmt.Printf("Proxy is going to listen on %s:%s ...\n", ip, port)
+	err2 := http.ListenAndServe(ip+":"+port, nil)
 	if err2 != nil {
+		fmt.Printf("Start http server failed. \n >> %+v\n", err2)
 		log.Fatal("ListenAndServe: ", err2)
 	}
 }

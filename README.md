@@ -38,7 +38,7 @@ $ ./proxy
 
 ### 客户端
 
-在浏览器中打开 `http://<server>:9000/app/viewer.html`，即可直接观看监控视频。
+在浏览器中打开 `http://<server>:9000/app/demo.html`，即可直接观看演示视频。
 
 
 
