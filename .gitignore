@@ -30,3 +30,4 @@ wproxy.exe
 .vscode/*.sql
 conf/config-gh.json
 .DS_Store
+.vscode/database.json

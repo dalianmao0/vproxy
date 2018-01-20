@@ -1,5 +1,7 @@
 {
-  "cmd": "-y -re -rtsp_transport tcp -max_delay 500000 -i {{uri}} -vcodec libx264 -preset ultrafast -tune zerolatency -g 6 -threads 4 -f mp4 -movflags frag_keyframe -flags global_header -bsf:v dump_extra -",
+  "ip":"",
+  "port": "9000",
+  "cmd": "-y -re -rtsp_transport tcp -allowed_media_types video -stimeout 30000000 -max_delay 500000 -i {{uri}} -vcodec libx264 -preset ultrafast -tune zerolatency -g 6 -threads 6 -f mp4 -movflags frag_keyframe -flags global_header -bsf:v dump_extra -s 640x480 -",
   "demo": "rtsp://184.72.239.149/vod/mp4:BigBuckBunny_115k.mov",
   "gaohe_outer": "rtsp://admin:12345@60.220.238.150:554/h264/ch1/main/av_stream",
   "gaohe_inner": "rtsp://admin:12345@172.16.30.141:554/h264/ch1/main/av_stream",
